@@ -5,38 +5,42 @@
  * @Madelon
  * @1.1
  */
-import java.awt.*; 
-import java.awt.event.*; 
-import javax.swing.*;  
-import java.util.HashMap; 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
-public class MyGridLayout extends JLayeredPane implements ActionListener{  
+public class MyGridLayout extends JLayeredPane implements ActionListener{
     int columns;
     int rows;
     int numButtons;
     int newValue;
     Spot control;
     JPanel top;
-    MyGridLayout(int height, int width){    
+    JPanel bottom;
+    MyGridLayout(int height, int width){
         columns = width;
         rows = height;
         numButtons = width*height;
-         
+
         String ButtonName = "b";
         int i = 0;
         int j = 0;
         JPanel top = new JPanel();
-        top.setLayout(new GridLayout(rows, columns)); 
+        top.setLayout(new GridLayout(rows, columns));
         top.setSize(300,300);
-        //setting grid layout of 3 rows and 3 columns 
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new GridLayout(rows, columns));
+        bottom.setSize(300,300);
+        //setting grid layout of 3 rows and 3 columns
         Map<String, Spot> buttons = new HashMap<>();
         for (i = 0; i < numButtons; i++) {
           Spot btn = new Spot(i);
               btn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent ae) {
                     btn.setVisible(false);
-                    
+
                 }
             });
           buttons.put(btn.getID(), btn);
@@ -62,23 +66,27 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                             if (control.getValue() == "B") {
                                 newValue = newValue + 1;
                             }
+                          }
                         }
-                    }
                 current.changeValue(Integer.toString(newValue));
-            }
-           
-        }
-        
-        add(top);
-      
-        setSize(300,300);  
-        setVisible(true);  
-    }  
-    public static void main(String[] args) {  
-        new MyGridLayout(16,33);  
+              }
+              System.out.println(current.getValue());
+              JLabel ButtonValue = new JLabel();
+              ButtonValue.setText(current.getValue());
+              ButtonValues.put(Integer.toString(j), ButtonValue);
+              bottom.add(ButtonValue);
+          }
+
+          add(top, Integer.valueOf(1));
+          add(bottom, Integer.valueOf(0));
+          setSize(300,300);
+          setVisible(true);
     }
-    
+    public static void main(String[] args) {
+        new MyGridLayout(16,33);
+    }
+
     public void actionPerformed( ActionEvent e ) {
-       
+
     }
-}  
+}
