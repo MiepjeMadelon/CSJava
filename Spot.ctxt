@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Spot
+comment1.params=id
+comment1.target=Spot(int)
+comment2.params=ValueName
+comment2.target=void\ changeValue(java.lang.String)
+comment3.params=
+comment3.target=java.lang.String\ getValue()
+comment4.params=
+comment4.target=java.lang.String\ getID()
+comment5.params=e
+comment5.target=void\ actionPerformed(java.awt.event.ActionEvent)
+numComments=6
