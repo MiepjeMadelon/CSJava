@@ -5,30 +5,24 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-import java.awt.*;  
+import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;  
-import java.util.SplittableRandom;
-  
-public class Spot extends JButton implements ActionListener{  
-    private String value = "_";
+import javax.swing.*;
+
+public class Spot extends JButton implements ActionListener{
+    private String value;
     int spotID;
     Spot(int id){
         spotID = id;
-        SplittableRandom random = new SplittableRandom();
-        int chance = random.nextInt(20);
         String value = new String();
-        value = "_";
         addActionListener( this );
-        if (chance < 4) {
-            value="B";
-        }
+
     }
-    
+
     public void changeValue(String ValueName) {
         value = ValueName;
     }
-    
+
     public String getValue() {
         return value;
     }
@@ -36,6 +30,6 @@ public class Spot extends JButton implements ActionListener{
         return  Integer.toString(spotID);
     }
     public void actionPerformed( ActionEvent e ) {
-        
+
     }
-}  
+}

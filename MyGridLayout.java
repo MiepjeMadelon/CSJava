@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.SplittableRandom;
 public class MyGridLayout extends JLayeredPane implements ActionListener{
     int columns;
     int rows;
@@ -36,15 +37,26 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         //setting grid layout of 3 rows and 3 columns
         Map<String, Spot> buttons = new HashMap<>();
         for (i = 0; i < numButtons; i++) {
+          SplittableRandom random = new SplittableRandom();
+          int chance = random.nextInt(20);
+          String r;
           Spot btn = new Spot(i);
-              btn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                    btn.setVisible(false);
-
-                }
-            });
+          r = " ";
+          if (chance < 4) {
+            r = "B";
+            btn.changeValue("B");
+          } else {
+            r = "0";
+            btn.changeValue("0");
+          }
+          btn.addActionListener(new ActionListener() {
+              public void actionPerformed(ActionEvent ae) {
+                  btn.setVisible(false);
+              }
+          });
           buttons.put(btn.getID(), btn);
           top.add(btn);
+          System.out.println(btn.getID());
         }
         Map<String, JLabel> ButtonValues = new HashMap<>();
         for (j = 0; j < numButtons; j++){
@@ -60,6 +72,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                 checkID[6] = j+columns;
                 checkID[7] = j+columns+1;
                 int k;
+                newValue = 0;
                     for (k = 0; k < 8; k++) {
                         if (!(checkID[k] < 0) && !(checkID[k] > (numButtons-1))){
                             Spot control = buttons.get(Integer.toString(checkID[k]));
@@ -77,8 +90,8 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
               bottom.add(ButtonValue);
           }
 
-          add(top, Integer.valueOf(1));
-          add(bottom, Integer.valueOf(0));
+          add(top, Integer.valueOf(2));
+          add(bottom, Integer.valueOf(1));
           setSize(300,300);
           setVisible(true);
     }
