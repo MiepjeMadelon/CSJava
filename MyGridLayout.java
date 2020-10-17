@@ -30,6 +30,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         int j = 0;
         JPanel top = new JPanel();
         top.setLayout(new GridLayout(rows, columns));
+        top.setOpaque(false);
         top.setSize(300,300);
         JPanel bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
