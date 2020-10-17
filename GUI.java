@@ -1,10 +1,14 @@
-// Opstartklasse voor applicatie met paneel
-// in dit geval een inhoud applicatie
+/**
+ *Het scherm waar de applicatie op draait
+ *
+ * @Madelon
+ * @1.0
+ */
 import javax.swing.*;
 
 class GUI extends JFrame {
   public GUI() {
-    setContentPane( new MyGridLayout(16,33) );
+    setContentPane( new MyGridLayout(16,33)/*geeft de grootte van de map*/ );
   }
 
   public static void main( String args[] ) {
@@ -12,7 +16,7 @@ class GUI extends JFrame {
     frame.setLayout(null);
     frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     frame.setSize( 600, 200 );
-    frame.setTitle( "Inhoud kubus, bol of cilinder berekenen" );
+    frame.setTitle( "Minesweeper" );
     frame.setVisible( true );
   }
 }
