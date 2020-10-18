@@ -51,7 +51,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
           String r;
           Spot btn = new Spot(i);
           r = " ";
-          if (chance < 3) {
+          if (chance < 2) {
             r = "B";
             btn.changeValue("B");
           } else {
@@ -145,12 +145,14 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         //controleren of de huidige cell de juiste knop bevat
         if(e.getSource() == buttons.get(Integer.toString(l))) {
           ebtn = buttons.get(Integer.toString(l));
-          ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
-          numClicks = numClicks + 1;
-          if (ebtn.getValue() == "B") {
-            System.out.println("You've lost :(");
-          } else if(numClicks >= numClickToWin) {
-            System.out.println("You've won! :D");
+          if(!(ebtn.getHasFlag())){
+            ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
+            numClicks = numClicks + 1;
+            if (ebtn.getValue() == "B") {
+              System.out.println("You've lost :(");
+            } else if(numClicks == numClickToWin) {
+              System.out.println("You've won! :D");
+            }
           }
 
         }
