@@ -30,10 +30,10 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         top = new JPanel();
         top.setLayout(new GridLayout(rows, columns)); //zorgt ervoor dat de knoppen op vaste plekken komen.
         top.setOpaque(false); //zorgt ervoor dat wanneer een knopje wordt ingedrukt de lagen eronder zichtbaar zijn.
-        top.setSize(300,300);
+        top.setSize(450,450);
         bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
-        bottom.setSize(300,300);
+        bottom.setSize(450,450);
         /* -- Loop 1: de knoppen --
         * In deze loop maken we voor elke cel een nieuwe instantie van spot aan.
         *We geven deze ook een nieuwe waarde, met een kans van een op 10 dat deze een bom is.
@@ -64,7 +64,13 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
           btn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) { // if right click
-                  btn.setText("F");
+                  if(btn.getHasFlag()){
+                    btn.setText("");
+                    btn.changeHasFlag();
+                  } else {
+                    btn.setText("F");
+                    btn.changeHasFlag();
+                  }
                 }
             }
           });
@@ -108,6 +114,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                           }
                         }
                 current.changeValue(Integer.toString(newValue)); //verandert de waarde van de spot.
+                if (newValue == 0) {
+                  current.changeValue("");
+                }
               }
               //Maakt de JLabel met de value als tekst, stopt hem in de map en stopt hem in de JPanel
               JLabel ButtonValue = new JLabel();
@@ -118,7 +127,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
 
           add(top, Integer.valueOf(2)); //voegt de laag met de knoppen toe aan de JLayeredPane
           add(bottom, Integer.valueOf(1)); //voegt de laag met de waardes toe aan de JLayeredPane
-          setSize(300,300);
+          setSize(450,450);
           setVisible(true);
     }
 
