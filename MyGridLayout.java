@@ -24,7 +24,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
     int numBombs; //
     int numClickToWin;
     int numClicks;
-    MyGridLayout(int height, int width) throws InterruptedException{
+    MyGridLayout(int height, int width) {
         columns = width;
         rows = height;
         numButtons = width*height;
@@ -155,12 +155,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
             ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
             numClicks = numClicks + 1;
             if (ebtn.getValue() == "B") {
-              try {
-                  ebtn.setVisible(false);
-                  Thread.sleep(1000);
-              }
-              catch(InterruptedException ie) {
-              }
+              ebtn.setVisible(false);
               top.setVisible(false);
               JOptionPane.showInputDialog(null, "Results", "You've lost :(");
 

@@ -15,12 +15,8 @@ class GUI extends JFrame {
     int height = 16;
     int width = 33;
     JFrame frame = new GUI();
-    try {
-        MyGridLayout mnswp = new MyGridLayout(height,width);
-        frame.add(mnswp);
-    }
-    catch(InterruptedException ie) {
-    }
+    MyGridLayout mnswp = new MyGridLayout(height,width);
+    frame.add(mnswp);
     frame.setLayout(null);
     frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     frame.setSize( width*32 , height*32 );
