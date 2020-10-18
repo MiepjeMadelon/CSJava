@@ -1,41 +1,29 @@
 
 /**
- * Deze class is voor de vierkantjes van het scherm waar je op kan klikken. Hier wordt vastgesteld welke vakjes allemaal bommen zijn.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Deze class is voor de vierkantjes van het scherm waar je op kan klikken.
+ * @Madelon
+ * @2.5
  */
-import java.awt.*;  
+import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;  
-import java.util.SplittableRandom;
-  
-public class Spot extends JButton implements ActionListener{  
-    private String value = "_";
-    int spotID;
+import javax.swing.*;
+
+public class Spot extends JButton{
+    private String value; //de waarde van het vakje
+    int spotID; //de ID van het vakje
     Spot(int id){
-        spotID = id;
-        SplittableRandom random = new SplittableRandom();
-        int chance = random.nextInt(20);
-        String value = new String();
-        value = "_";
-        addActionListener( this );
-        if (chance < 4) {
-            value="B";
-        }
+        spotID = id; //de ID wordt door MyGridLayout gegeven
+        String value = new String(); // definieërt de string
     }
-    
-    public void changeValue(String ValueName) {
+
+    public void changeValue(String ValueName) { //verandert de Value
         value = ValueName;
     }
-    
-    public String getValue() {
+
+    public String getValue() { //geeft de value
         return value;
     }
-    public String getID() {
+    public String getID() { //geeft de ID (als String om het in een map op te kunnen bergen)
         return  Integer.toString(spotID);
     }
-    public void actionPerformed( ActionEvent e ) {
-        
-    }
-}  
+}
