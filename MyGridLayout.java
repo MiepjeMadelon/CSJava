@@ -139,6 +139,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         //controleren of de huidige cell de juiste knop bevat
         if(e.getSource() == buttons.get(Integer.toString(l))) {
           ebtn = buttons.get(Integer.toString(l));
+          if () {
+
+          }
           ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
         }
 
