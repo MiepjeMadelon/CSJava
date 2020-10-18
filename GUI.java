@@ -8,14 +8,22 @@ import javax.swing.*;
 
 class GUI extends JFrame {
   public GUI() {
-    setContentPane( new MyGridLayout(16,33)/*geeft de grootte van de map*/ );
+    /*geeft de grootte van de map*/
   }
 
   public static void main( String args[] ) {
+    int height = 16;
+    int width = 33;
     JFrame frame = new GUI();
+    try {
+        MyGridLayout mnswp = new MyGridLayout(height,width);
+        frame.add(mnswp);
+    }
+    catch(InterruptedException ie) {
+    }
     frame.setLayout(null);
     frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    frame.setSize( 600, 200 );
+    frame.setSize( width*32 , height*32 );
     frame.setTitle( "Minesweeper" );
     frame.setVisible( true );
   }
