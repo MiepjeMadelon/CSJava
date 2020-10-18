@@ -61,6 +61,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                   btn.setVisible(false);
               }
           });
+          btn.addActionListener( this );
           //de knop in de hashmap zetten
           buttons.put(btn.getID(), btn);
           //de knop in het frame zetten.
@@ -81,7 +82,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
               //wat rekensommen om ongeacht de grootte van de grid de omliggende acht waardes te vinden.
                 int[] checkID = new int[8];
                 checkID[0] = j-columns-1;
-                checkID[1] =  j-columns;
+                checkID[1] = j-columns;
                 checkID[2] = j-columns+1;
                 checkID[3] = j-1;
                 checkID[4] = j+1;
