@@ -20,6 +20,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
     Map<String, Spot> buttons;
+    int numBombs;
+    int numClickToWin;
+    int numClicks;
     MyGridLayout(int height, int width){
         columns = width;
         rows = height;
@@ -48,7 +51,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
           String r;
           Spot btn = new Spot(i);
           r = " ";
-          if (chance < 2) {
+          if (chance < 19) {
             r = "B";
             btn.changeValue("B");
           } else {
@@ -117,6 +120,8 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                 if (newValue == 0) {
                   current.changeValue("");
                 }
+              } else {
+                numBombs = numBombs + 1;
               }
               //Maakt de JLabel met de value als tekst, stopt hem in de map en stopt hem in de JPanel
               JLabel ButtonValue = new JLabel();
@@ -124,7 +129,8 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
               ButtonValues.put(Integer.toString(j), ButtonValue);
               bottom.add(ButtonValue);
           }
-
+          numClickToWin = numButtons - numBombs;
+          numClicks = 0;
           add(top, Integer.valueOf(2)); //voegt de laag met de knoppen toe aan de JLayeredPane
           add(bottom, Integer.valueOf(1)); //voegt de laag met de waardes toe aan de JLayeredPane
           setSize(450,450);
@@ -134,14 +140,20 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
     public void actionPerformed( ActionEvent e ) {
       //for loop die door alles loopt om te kijken welke knop is ingedrukt
       int l;
-      JButton ebtn;
+      Spot ebtn;
       for (l = 0; l < numButtons; l++) {
         //controleren of de huidige cell de juiste knop bevat
         if(e.getSource() == buttons.get(Integer.toString(l))) {
           ebtn = buttons.get(Integer.toString(l));
           ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
-        }
+          numClicks = numClicks + 1;
+          if (ebtn.getValue() == "B") {
+            System.out.println("You've lost :(");
+          } else if(numClicks >= numClickToWin) {
+            System.out.println("You've won! :D");
+          }
 
+        }
       }
     }
 }
