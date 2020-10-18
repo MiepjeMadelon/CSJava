@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.SplittableRandom;
+import javax.swing.SwingUtilities;
 public class MyGridLayout extends JLayeredPane implements ActionListener{
     int columns; //we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
     int rows;//we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
@@ -60,6 +61,13 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                   btn.setVisible(false);
               }
           });*/
+          btn.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) { // if right click
+                  btn.setText("F");
+                }
+            }
+          });
           btn.addActionListener( this );
           //de knop in de hashmap zetten
           buttons.put(btn.getID(), btn);
