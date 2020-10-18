@@ -16,10 +16,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
     int columns; //we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
     int rows;//we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
     int numButtons; //het totaal aantal cellen (dus het totaal aantal buttons) in de grid
-    int newValue; //op een gegeven moment moeten de vakjes onder de knoppen een waarde krijgen ("", B, of 1-8)
-    Spot control; //de plek waarvan we controleren of het huidige vakje in de loop zijn waarde moet worden aangepast
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
+    Map<String, Spot> buttons;
     MyGridLayout(int height, int width){
         columns = width;
         rows = height;
@@ -27,11 +26,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
 
         int i = 0; // definieërt de i voor de loop van de buttons
         int j = 0; // definieërt de j voor de loop van de waardes
-        JPanel top = new JPanel();
+        top = new JPanel();
         top.setLayout(new GridLayout(rows, columns)); //zorgt ervoor dat de knoppen op vaste plekken komen.
         top.setOpaque(false); //zorgt ervoor dat wanneer een knopje wordt ingedrukt de lagen eronder zichtbaar zijn.
         top.setSize(300,300);
-        JPanel bottom = new JPanel();
+        bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
         bottom.setSize(300,300);
         /* -- Loop 1: de knoppen --
@@ -40,7 +39,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         *We slaan elk nieuw object op in een nieuwe map, waardoor we elk object op basis van hun ID
         *terug kunnen vinden, en zodat we deze kunnen koppelen aan een JLabel.
         */
-        Map<String, Spot> buttons = new HashMap<>();//de hashmap waarin de knoppen worden opgeslagen.
+        buttons = new HashMap<>();//de hashmap waarin de knoppen worden opgeslagen.
         for (i = 0; i < numButtons; i++) { //de loop
           //de waarde eventueel naar bom veranderen door een random int te trekken.
           SplittableRandom random = new SplittableRandom();
@@ -56,11 +55,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
             btn.changeValue("0");
           }
           //de knop een actionlistener geven zodat deze verdwijnt wanneer erop geklikt wordt.
-          btn.addActionListener(new ActionListener() {
+          /*btn.addActionListener(new ActionListener() {
               public void actionPerformed(ActionEvent ae) {
                   btn.setVisible(false);
               }
-          });
+          });*/
           btn.addActionListener( this );
           //de knop in de hashmap zetten
           buttons.put(btn.getID(), btn);
@@ -90,10 +89,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                 checkID[6] = j+columns;
                 checkID[7] = j+columns+1;
                 int k;
-                newValue = 0;
+                int newValue = 0;
                     for (k = 0; k < 8; k++) { //loopt door de acht mogelijke andere vakjes heen
                         if (!(checkID[k] < 0) && !(checkID[k] > (numButtons-1))){ //checkt of het vakje bestaat
-                            Spot control = buttons.get(Integer.toString(checkID[k])); //pakt het vakje dat om het current vakje heen ligt
+                            Spot control;
+                            control = buttons.get(Integer.toString(checkID[k])); //pakt het vakje dat om het current vakje heen ligt
                             if (control.getValue() == "B") { //controleert of het een bom is
                                 newValue = newValue + 1; //verhoogt de waarde met een.
                             }
@@ -115,6 +115,16 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
     }
 
     public void actionPerformed( ActionEvent e ) {
+      //for loop die door alles loopt om te kijken welke knop is ingedrukt
+      int l;
+      JButton ebtn;
+      for (l = 0; l < numButtons; l++) {
+        //controleren of de huidige cell de juiste knop bevat
+        if(e.getSource() == buttons.get(Integer.toString(l))) {
+          ebtn = buttons.get(Integer.toString(l));
+          ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
+        }
 
+      }
     }
 }
