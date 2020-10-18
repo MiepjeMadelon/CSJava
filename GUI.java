@@ -5,7 +5,7 @@
  * @1.0
  */
 import javax.swing.*;
-
+//outdated versie!
 class GUI extends JFrame {
   public GUI() {
     /*geeft de grootte van de map*/
@@ -21,6 +21,6 @@ class GUI extends JFrame {
     frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     frame.setSize( width*32 , height*32 );
     frame.setTitle( "Minesweeper" );
-    frame.setVisible( true );
+    frame.setVisible(true);
   }
 }
