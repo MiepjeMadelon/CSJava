@@ -21,9 +21,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
     Map<String, Spot> buttons; //de map waarin alle vakjes worden opgeslagen op basis van hun ID
-    int numBombs; //
-    int numClickToWin;
-    int numClicks;
+    int numBombs; //om te tellen hoeveel bommen er totaal in het spel zijn
+    int numClickToWin; //om te tellen hoevaak iemand op een leeg vakje moet klikken zodat er alleen nog bommen over zjin
+    int numClicks; //om te tellen hoevaak een persoon geklikt heeft
     MyGridLayout(int height, int width) {
         columns = width;
         rows = height;
@@ -38,7 +38,6 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
         top.setSize(sizeWidth,sizeHeight);
         bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
-        bottom.setOpaque(false);
         bottom.setSize(sizeWidth,sizeHeight);
         /* -- Loop 1: de knoppen --
         * In deze loop maken we voor elke cel een nieuwe instantie van spot aan.
@@ -61,12 +60,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
             r = "0";
             btn.changeValue("0");
           }
-          //de knop een actionlistener geven zodat deze verdwijnt wanneer erop geklikt wordt.
-          /*btn.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent ae) {
-                  btn.setVisible(false);
-              }
-          });*/
+          /*
+          hier krijgt elke knop een mouselistener om de vlaggen bij te houden
+          */
           btn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) { // if right click
