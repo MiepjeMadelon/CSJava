@@ -13,14 +13,20 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.SplittableRandom;
 import javax.swing.SwingUtilities;
-public class MyGridLayout extends JLayeredPane implements ActionListener{
+import java.lang.*;
+public class MyGridLayout extends JLayeredPane implements ActionListener {
     int columns; //we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
     int rows;//we werken met een gridlayout, hiervoor zijn kolommen en rijen nodig
     int numButtons; //het totaal aantal cellen (dus het totaal aantal buttons) in de grid
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
+    JPanel lost;
+    JPanel won;
     Map<String, Spot> buttons;
-    MyGridLayout(int height, int width){
+    int numBombs;
+    int numClickToWin;
+    int numClicks;
+    MyGridLayout(int height, int width) throws InterruptedException{
         columns = width;
         rows = height;
         numButtons = width*height;
@@ -33,6 +39,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
         top.setSize(450,450);
         bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
+        bottom.setOpaque(false);
         bottom.setSize(450,450);
         /* -- Loop 1: de knoppen --
         * In deze loop maken we voor elke cel een nieuwe instantie van spot aan.
@@ -117,6 +124,8 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
                 if (newValue == 0) {
                   current.changeValue("");
                 }
+              } else {
+                numBombs = numBombs + 1;
               }
               //Maakt de JLabel met de value als tekst, stopt hem in de map en stopt hem in de JPanel
               JLabel ButtonValue = new JLabel();
@@ -124,24 +133,57 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
               ButtonValues.put(Integer.toString(j), ButtonValue);
               bottom.add(ButtonValue);
           }
-
-          add(top, Integer.valueOf(2)); //voegt de laag met de knoppen toe aan de JLayeredPane
-          add(bottom, Integer.valueOf(1)); //voegt de laag met de waardes toe aan de JLayeredPane
+          numClickToWin = numButtons - numBombs;
+          numClicks = 0;
+          add(top, Integer.valueOf(3)); //voegt de laag met de knoppen toe aan de JLayeredPane
+          add(bottom, Integer.valueOf(2)); //voegt de laag met de waardes toe aan de JLayeredPane
           setSize(450,450);
           setVisible(true);
+
+          lost = new JPanel();
+          lost.setSize(450,450);
+          JLabel messageLost = new JLabel("O no, you've lost :(");
+          lost.add(messageLost);
+          add(messageLost, Integer.valueOf(1));
     }
 
     public void actionPerformed( ActionEvent e ) {
       //for loop die door alles loopt om te kijken welke knop is ingedrukt
       int l;
-      JButton ebtn;
+      Spot ebtn;
       for (l = 0; l < numButtons; l++) {
         //controleren of de huidige cell de juiste knop bevat
         if(e.getSource() == buttons.get(Integer.toString(l))) {
           ebtn = buttons.get(Integer.toString(l));
-          ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
-        }
+          if(!(ebtn.getHasFlag())){
+            ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
+            numClicks = numClicks + 1;
+            if (ebtn.getValue() == "B") {
+              try {
+                  ebtn.setVisible(false);
+                  Thread.sleep(1000);
+              }
+              catch(InterruptedException ie) {
+              }
+              bottom.setVisible(false);
+              top.setVisible(false);
+              JOptionPane.showInputDialog(null, "Results", "You've lost :(");
+            //  JLabel lost = new JLabel();
+              //lost.setText("You've lost :(. Restart the application to try again");
+            //  add(lost, Integer.valueOf(3));
 
+            } else if(numClicks == numClickToWin) {
+              JOptionPane.showInputDialog(null, "Results", "You've won :D");
+              ebtn.setVisible(false);
+              bottom.setVisible(false);
+              top.setVisible(false);
+            //  JLabel won = new JLabel();
+            //  won.setText("You've won :D. Restart the application to try again");
+            //  add(won, Integer.valueOf(3));
+            }
+          }
+
+        }
       }
     }
 }
