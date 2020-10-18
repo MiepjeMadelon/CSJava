@@ -51,7 +51,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener{
           String r;
           Spot btn = new Spot(i);
           r = " ";
-          if (chance < 19) {
+          if (chance < 3) {
             r = "B";
             btn.changeValue("B");
           } else {
