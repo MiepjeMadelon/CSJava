@@ -135,7 +135,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           add(bottom, Integer.valueOf(2)); //voegt de laag met de waardes toe aan de JLayeredPane
           setSize(sizeWidth,sizeHeight);
           setVisible(true);
-
+          System.out.println(numBombs);
 
     }
 
@@ -155,10 +155,6 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
               top.setVisible(false);
               JOptionPane.showInputDialog(null, "Results", "You've lost :(");
 
-            } else if(numClicks == numClickToWin) {
-              JOptionPane.showInputDialog(null, "Results", "You've won :D");
-              ebtn.setVisible(false);
-              top.setVisible(false);
             }
 
             //code to make stuff dissapear if it is a ""
@@ -177,7 +173,12 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                   if (!(checkID[k] < 0) && !(checkID[k] > (numButtons-1))){ //checkt of het vakje bestaat
                       Spot control;
                       control = buttons.get(Integer.toString(checkID[k])); //pakt het vakje dat om het current vakje heen ligt
-                      control.setVisible(false);
+                      try {
+                        control.setVisible(false);
+                        numClicks = numClicks+1;
+                      } catch(Exception ce) {
+                      }
+                      numClicks = numClicks+1;
                       while (control.getValue() == "") {
                         try
                         {
@@ -194,7 +195,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                           int n;
                           for (n = 0; n < 8; n++) {
                             control = buttons.get(Integer.toString(checkID2[n])); //pakt het vakje dat om het current vakje heen ligt
-                            control.setVisible(false);
+                            try {
+                              control.setVisible(false);
+                              numClicks = numClicks+1;
+                            } catch(Exception ce) {
+                            }
                           }
                         }
                         catch (NumberFormatException nfe)
@@ -206,6 +211,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                       }
                     }
                   }
+            }
+            if(numClicks == numClickToWin) {
+              JOptionPane.showInputDialog(null, "Results", "You've won :D");
+              ebtn.setVisible(false);
+              top.setVisible(false);
             }
           }
 

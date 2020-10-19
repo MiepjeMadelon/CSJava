@@ -79,13 +79,26 @@
        }
        try {
          kolom = Integer.parseInt(TKolommen);
+         if (kolom > 40) {
+           kolom = 33;
+           throw new TeGrootException();
+         }
        } catch(NumberFormatException nfekolom) {
+         kolom = 33;
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + TKolommen + " is geen getal",
+            "Uw invoer " + TKolommen + " is geen getal, het is aangepast naar 33.",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
+       } catch(TeGrootException tgekolom) {
+         JOptionPane.showMessageDialog(
+            this,
+            "Uw invoer " + TKolommen + " is te groot, de maximale waarde is 40. Het is aangepast naar 33",
+            "Invoerfout",
+            JOptionPane.ERROR_MESSAGE
+         );
+
        }
       dispose();
       new GUIMinesweeper(rij,kolom);

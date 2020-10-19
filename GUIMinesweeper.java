@@ -19,7 +19,7 @@ class GUIMinesweeper extends JFrame {
     //frame.setSize( width*32 , height*32 );
     setTitle( "Minesweeper" );
     setVisible(true);
-    setSize(600,600);
+    setSize(columns*33, rows*32);
   }
 
   public static void main( String args[] ) {
