@@ -1,8 +1,8 @@
 /**
  *Het scherm waar de applicatie op draait
  *
- * @Madelon
- * @1.0
+ * @author Madelon
+ * @version 2.0
  */
  import javax.swing.*;
  import java.awt.*;
@@ -31,7 +31,7 @@
      info.add(Kolommennum);
      info.add(kolommen);
      info.add(start);
-     setSize(600,600);
+     setSize(350,175);
    }
 
    public static void main( String args[] ) {
@@ -58,6 +58,9 @@
          if (rij > 20) {
            rij = 16;
            throw new TeGrootException();
+         } else if (rij < 5) {
+           rij = 16;
+           throw new TeKleinException();
          }
 
        } catch(NumberFormatException nferij) {
@@ -76,12 +79,22 @@
             JOptionPane.ERROR_MESSAGE
          );
 
+       } catch(TeKleinException tkerij) {
+         JOptionPane.showMessageDialog(
+            this,
+            "Uw invoer " + Trijen + " is te klein, de minimale waarde is 5. Het is aangepast naar 16",
+            "Invoerfout",
+            JOptionPane.ERROR_MESSAGE
+         );
        }
        try {
          kolom = Integer.parseInt(TKolommen);
          if (kolom > 40) {
            kolom = 33;
            throw new TeGrootException();
+         } else if (kolom < 5) {
+           kolom = 33;
+           throw new TeKleinException();
          }
        } catch(NumberFormatException nfekolom) {
          kolom = 33;
@@ -99,6 +112,13 @@
             JOptionPane.ERROR_MESSAGE
          );
 
+       } catch(TeKleinException tkekolom) {
+         JOptionPane.showMessageDialog(
+            this,
+            "Uw invoer " + TKolommen + " is te klein, de minimale waarde is 5. Het is aangepast naar 33",
+            "Invoerfout",
+            JOptionPane.ERROR_MESSAGE
+         );
        }
       dispose();
       new GUIMinesweeper(rij,kolom);

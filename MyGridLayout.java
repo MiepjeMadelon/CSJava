@@ -21,6 +21,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
     Map<String, Spot> buttons; //de map waarin alle vakjes worden opgeslagen op basis van hun ID
+    Map<String, Spot> flags;
     int numBombs; //om te tellen hoeveel bommen er totaal in het spel zijn
     int numClickToWin; //om te tellen hoevaak iemand op een leeg vakje moet klikken zodat er alleen nog bommen over zjin
     int numClicks; //om te tellen hoevaak een persoon geklikt heeft
@@ -46,6 +47,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
         *terug kunnen vinden, en zodat we deze kunnen koppelen aan een JLabel.
         */
         buttons = new HashMap<>();//de hashmap waarin de knoppen worden opgeslagen.
+        flags = new HashMap<>();
         for (i = 0; i < numButtons; i++) { //de loop
           //de waarde eventueel naar bom veranderen door een random int te trekken.
           SplittableRandom random = new SplittableRandom();
@@ -69,10 +71,21 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                   if(btn.getHasFlag()){
                     btn.setText("");
                     btn.changeHasFlag();
+                    if(btn.getValue() == "B"){
+                      flags.remove(btn.getID());
+                    }
                   } else {
                     btn.setText("F");
                     btn.changeHasFlag();
+                    if(btn.getValue() == "B"){
+                      flags.put(btn.getID(), btn);
+                    }
                   }
+
+                }
+                if(flags.size() == numBombs){
+                  JOptionPane.showInputDialog(null, "Results", "You've won :D");
+                  top.setVisible(false);
                 }
             }
           });
@@ -212,14 +225,14 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                     }
                   }
             }
-            if(numClicks == numClickToWin) {
+            /*if(numClicks == numClickToWin) {
               JOptionPane.showInputDialog(null, "Results", "You've won :D");
               ebtn.setVisible(false);
               top.setVisible(false);
+            }*/
             }
           }
 
         }
       }
     }
-}
