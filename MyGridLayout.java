@@ -53,7 +53,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           String r;
           Spot btn = new Spot(i);
           r = " ";
-          if (chance < 2) {
+          if (chance < 3) {
             r = "B";
             btn.changeValue("B");
           } else {
@@ -144,7 +144,6 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           add(bottom, Integer.valueOf(2)); //voegt de laag met de waardes toe aan de JLayeredPane
           setSize(sizeWidth,sizeHeight);
           setVisible(true);
-          System.out.println(numBombs);
 
     }
 

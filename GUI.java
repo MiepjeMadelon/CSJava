@@ -68,7 +68,7 @@
          //een popup
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + Trijen + " is geen getal, het is aangepast naar 16",
+            "Uw invoer voor de rijen:" + Trijen + " is geen getal, het is aangepast naar 16",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
@@ -76,7 +76,7 @@
          //een popup
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + Trijen + " is te groot, de maximale waarde is 20. Het is aangepast naar 16",
+            "Uw invoer voor de rijen:" + Trijen + " is te groot, de maximale waarde is 20. Het is aangepast naar 16",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
@@ -84,7 +84,7 @@
          //een popup
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + Trijen + " is te klein, de minimale waarde is 5. Het is aangepast naar 16",
+            "Uw invoer voor de rijen:" + Trijen + " is te klein, de minimale waarde is 5. Het is aangepast naar 16",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
@@ -104,14 +104,14 @@
          kolom = 33;
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + TKolommen + " is geen getal, het is aangepast naar 33.",
+            "Uw invoer voor de kolommen:" + TKolommen + " is geen getal, het is aangepast naar 33.",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
        } catch(TeGrootException tgekolom) {
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + TKolommen + " is te groot, de maximale waarde is 40. Het is aangepast naar 33",
+            "Uw invoer voor de kolommen:" + TKolommen + " is te groot, de maximale waarde is 40. Het is aangepast naar 33",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
@@ -119,7 +119,7 @@
        } catch(TeKleinException tkekolom) {
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + TKolommen + " is te klein, de minimale waarde is 5. Het is aangepast naar 33",
+            "Uw invoer voor de kolommen:" + TKolommen + " is te klein, de minimale waarde is 5. Het is aangepast naar 33",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
