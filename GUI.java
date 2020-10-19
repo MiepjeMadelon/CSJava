@@ -31,6 +31,7 @@
      info.add(Kolommennum);
      info.add(kolommen);
      info.add(start);
+     setSize(600,600);
    }
 
    public static void main( String args[] ) {
@@ -54,13 +55,27 @@
        int kolom = 33;
        try {
          rij = Integer.parseInt(Trijen);
+         if (rij > 20) {
+           rij = 16;
+           throw new TeGrootException();
+         }
+
        } catch(NumberFormatException nferij) {
+         rij = 16;
          JOptionPane.showMessageDialog(
             this,
-            "Uw invoer " + Trijen + " is geen getal",
+            "Uw invoer " + Trijen + " is geen getal, het is aangepast naar 16",
             "Invoerfout",
             JOptionPane.ERROR_MESSAGE
          );
+       } catch(TeGrootException tgerij) {
+         JOptionPane.showMessageDialog(
+            this,
+            "Uw invoer " + Trijen + " is te groot, de maximale waarde is 20. Het is aangepast naar 16",
+            "Invoerfout",
+            JOptionPane.ERROR_MESSAGE
+         );
+
        }
        try {
          kolom = Integer.parseInt(TKolommen);
