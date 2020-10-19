@@ -21,10 +21,8 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
     Map<String, Spot> buttons; //de map waarin alle vakjes worden opgeslagen op basis van hun ID
-    Map<String, Spot> flags;
+    Map<String, Spot> flags; //de map waarin op welke bommen al een vlag staat wordt aangegeven
     int numBombs; //om te tellen hoeveel bommen er totaal in het spel zijn
-    int numClickToWin; //om te tellen hoevaak iemand op een leeg vakje moet klikken zodat er alleen nog bommen over zjin
-    int numClicks; //om te tellen hoevaak een persoon geklikt heeft
     MyGridLayout(int height, int width) {
         columns = width;
         rows = height;
@@ -71,25 +69,25 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                   if(btn.getHasFlag()){
                     btn.setText("");
                     btn.changeHasFlag();
-                    if(btn.getValue() == "B"){
+                    if(btn.getValue() == "B"){ //als de waarde een bom is wordt dit opgeslagen
                       flags.remove(btn.getID());
                     }
                   } else {
                     btn.setText("F");
                     btn.changeHasFlag();
-                    if(btn.getValue() == "B"){
+                    if(btn.getValue() == "B"){ //als er geen vlag meer op een bepaalde bom staat wordt deze uit de lijst gehaald
                       flags.put(btn.getID(), btn);
                     }
                   }
 
                 }
-                if(flags.size() == numBombs){
+                if(flags.size() == numBombs){ //als het totaal aantal bommen gelijk is aan het totaal aantal vlaggen op een bom heb je gewonnen.
                   JOptionPane.showInputDialog(null, "Results", "You've won :D");
                   top.setVisible(false);
                 }
             }
           });
-          btn.addActionListener( this );
+          btn.addActionListener( this ); //om de knoppen en omringende knoppen weg te halen.
           //de knop in de hashmap zetten
           buttons.put(btn.getID(), btn);
           //de knop in het frame zetten.
@@ -129,11 +127,11 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                           }
                         }
                 current.changeValue(Integer.toString(newValue)); //verandert de waarde van de spot.
-                if (newValue == 0) {
+                if (newValue == 0) { //maakt vakken met 0 leeg
                   current.changeValue("");
                 }
               } else {
-                numBombs = numBombs + 1;
+                numBombs = numBombs + 1; //als het niet niet een bom is, gaat de telling van bommen een omhoog.
               }
               //Maakt de JLabel met de value als tekst, stopt hem in de map en stopt hem in de JPanel
               JLabel ButtonValue = new JLabel();
@@ -142,8 +140,6 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
               bottom.add(ButtonValue);
               ButtonValue.setHorizontalAlignment(JLabel.CENTER);
           }
-          numClickToWin = numButtons - numBombs;
-          numClicks = 0;
           add(top, Integer.valueOf(3)); //voegt de laag met de knoppen toe aan de JLayeredPane
           add(bottom, Integer.valueOf(2)); //voegt de laag met de waardes toe aan de JLayeredPane
           setSize(sizeWidth,sizeHeight);
@@ -162,7 +158,6 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           ebtn = buttons.get(Integer.toString(l));
           if(!(ebtn.getHasFlag())){
             ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
-            numClicks = numClicks + 1;
             if (ebtn.getValue() == "B") {
               ebtn.setVisible(false);
               top.setVisible(false);
@@ -170,8 +165,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
 
             }
 
-            //code to make stuff dissapear if it is a ""
+            //code om alle vakjes rondom een leeg vakje weg te halen
             if (ebtn.getValue() == "") {
+              //rekensommen om de vakjes om het vakje heen te berekenen.
               int[] checkID = new int[8];
               checkID[0] = l-columns-1;
               checkID[1] = l-columns;
@@ -188,11 +184,9 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                       control = buttons.get(Integer.toString(checkID[k])); //pakt het vakje dat om het current vakje heen ligt
                       try {
                         control.setVisible(false);
-                        numClicks = numClicks+1;
                       } catch(Exception ce) {
                       }
-                      numClicks = numClicks+1;
-                      while (control.getValue() == "") {
+                      while (control.getValue() == "") { //code om nog meer vakjes rond weer nieuwe lege vakjes leeg te maken.
                         try
                         {
                           int m = Integer.parseInt(control.getID());
@@ -210,26 +204,19 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                             control = buttons.get(Integer.toString(checkID2[n])); //pakt het vakje dat om het current vakje heen ligt
                             try {
                               control.setVisible(false);
-                              numClicks = numClicks+1;
                             } catch(Exception ce) {
                             }
                           }
                         }
                         catch (NumberFormatException nfe)
                         {
-                          System.out.println("NumberFormatException: " + nfe.getMessage());
-                          break;
+                          break;//zodat het programma niet crashed terwijl je ook het vakje aan kan klikken.
                         }
 
                       }
                     }
                   }
             }
-            /*if(numClicks == numClickToWin) {
-              JOptionPane.showInputDialog(null, "Results", "You've won :D");
-              ebtn.setVisible(false);
-              top.setVisible(false);
-            }*/
             }
           }
 

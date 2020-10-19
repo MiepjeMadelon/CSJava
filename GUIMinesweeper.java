@@ -5,7 +5,6 @@
  * @1.0
  */
 import javax.swing.*;
-//outdated versie!
 class GUIMinesweeper extends JFrame {
   JPanel game;
   int width;
@@ -13,16 +12,13 @@ class GUIMinesweeper extends JFrame {
   public GUIMinesweeper(int rows, int columns) {
     height = rows;
     width = columns;
-    setContentPane( new MyGridLayout(height, width) );
+    setContentPane( new MyGridLayout(height, width) ); //dit is wat op het scherm komt
     setLayout(null);
     setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-    //frame.setSize( width*32 , height*32 );
     setTitle( "Minesweeper" );
     setVisible(true);
-    setSize(columns*33, rows*32);
+    //de grootte past zich aan op basis van de input. De kolommen iets meer, aangezien dat er standaard iets meer zijn
+    setSize(columns*33, rows*35);
   }
 
-  public static void main( String args[] ) {
-    JFrame frame = new GUIMinesweeper(16, 33);
-  }
 }
