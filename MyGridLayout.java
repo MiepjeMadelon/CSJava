@@ -20,27 +20,24 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
     int numButtons; //het totaal aantal cellen (dus het totaal aantal buttons) in de grid
     JPanel top; //van het LayeredPane de twee na hoogste laag, namelijk de knoppen.
     JPanel bottom; //van het LayeredPane de laagste laag, namelijk de waardes
-    JPanel lost;
-    JPanel won;
-    Map<String, Spot> buttons;
-    int numBombs;
-    int numClickToWin;
-    int numClicks;
-    MyGridLayout(int height, int width) throws InterruptedException{
+    Map<String, Spot> buttons; //de map waarin alle vakjes worden opgeslagen op basis van hun ID
+    Map<String, Spot> flags; //de map waarin op welke bommen al een vlag staat wordt aangegeven
+    int numBombs; //om te tellen hoeveel bommen er totaal in het spel zijn
+    MyGridLayout(int height, int width) {
         columns = width;
         rows = height;
         numButtons = width*height;
-
+        int sizeHeight = 30*rows;
+        int sizeWidth = 30*columns;
         int i = 0; // definieërt de i voor de loop van de buttons
         int j = 0; // definieërt de j voor de loop van de waardes
         top = new JPanel();
         top.setLayout(new GridLayout(rows, columns)); //zorgt ervoor dat de knoppen op vaste plekken komen.
         top.setOpaque(false); //zorgt ervoor dat wanneer een knopje wordt ingedrukt de lagen eronder zichtbaar zijn.
-        top.setSize(450,450);
+        top.setSize(sizeWidth,sizeHeight);
         bottom = new JPanel();
         bottom.setLayout(new GridLayout(rows, columns));
-        bottom.setOpaque(false);
-        bottom.setSize(450,450);
+        bottom.setSize(sizeWidth,sizeHeight);
         /* -- Loop 1: de knoppen --
         * In deze loop maken we voor elke cel een nieuwe instantie van spot aan.
         *We geven deze ook een nieuwe waarde, met een kans van een op 10 dat deze een bom is.
@@ -48,6 +45,7 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
         *terug kunnen vinden, en zodat we deze kunnen koppelen aan een JLabel.
         */
         buttons = new HashMap<>();//de hashmap waarin de knoppen worden opgeslagen.
+        flags = new HashMap<>();
         for (i = 0; i < numButtons; i++) { //de loop
           //de waarde eventueel naar bom veranderen door een random int te trekken.
           SplittableRandom random = new SplittableRandom();
@@ -55,33 +53,41 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           String r;
           Spot btn = new Spot(i);
           r = " ";
-          if (chance < 2) {
+          if (chance < 3) {
             r = "B";
             btn.changeValue("B");
           } else {
             r = "0";
             btn.changeValue("0");
           }
-          //de knop een actionlistener geven zodat deze verdwijnt wanneer erop geklikt wordt.
-          /*btn.addActionListener(new ActionListener() {
-              public void actionPerformed(ActionEvent ae) {
-                  btn.setVisible(false);
-              }
-          });*/
+          /*
+          hier krijgt elke knop een mouselistener om de vlaggen bij te houden
+          */
           btn.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isRightMouseButton(e)) { // if right click
                   if(btn.getHasFlag()){
                     btn.setText("");
                     btn.changeHasFlag();
+                    if(btn.getValue() == "B"){ //als de waarde een bom is wordt dit opgeslagen
+                      flags.remove(btn.getID());
+                    }
                   } else {
                     btn.setText("F");
                     btn.changeHasFlag();
+                    if(btn.getValue() == "B"){ //als er geen vlag meer op een bepaalde bom staat wordt deze uit de lijst gehaald
+                      flags.put(btn.getID(), btn);
+                    }
                   }
+
+                }
+                if(flags.size() == numBombs){ //als het totaal aantal bommen gelijk is aan het totaal aantal vlaggen op een bom heb je gewonnen.
+                  JOptionPane.showInputDialog(null, "Results", "You've won :D");
+                  top.setVisible(false);
                 }
             }
           });
-          btn.addActionListener( this );
+          btn.addActionListener( this ); //om de knoppen en omringende knoppen weg te halen.
           //de knop in de hashmap zetten
           buttons.put(btn.getID(), btn);
           //de knop in het frame zetten.
@@ -121,30 +127,24 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
                           }
                         }
                 current.changeValue(Integer.toString(newValue)); //verandert de waarde van de spot.
-                if (newValue == 0) {
+                if (newValue == 0) { //maakt vakken met 0 leeg
                   current.changeValue("");
                 }
               } else {
-                numBombs = numBombs + 1;
+                numBombs = numBombs + 1; //als het niet niet een bom is, gaat de telling van bommen een omhoog.
               }
               //Maakt de JLabel met de value als tekst, stopt hem in de map en stopt hem in de JPanel
               JLabel ButtonValue = new JLabel();
               ButtonValue.setText(current.getValue());
               ButtonValues.put(Integer.toString(j), ButtonValue);
               bottom.add(ButtonValue);
+              ButtonValue.setHorizontalAlignment(JLabel.CENTER);
           }
-          numClickToWin = numButtons - numBombs;
-          numClicks = 0;
           add(top, Integer.valueOf(3)); //voegt de laag met de knoppen toe aan de JLayeredPane
           add(bottom, Integer.valueOf(2)); //voegt de laag met de waardes toe aan de JLayeredPane
-          setSize(450,450);
+          setSize(sizeWidth,sizeHeight);
           setVisible(true);
 
-          lost = new JPanel();
-          lost.setSize(450,450);
-          JLabel messageLost = new JLabel("O no, you've lost :(");
-          lost.add(messageLost);
-          add(messageLost, Integer.valueOf(1));
     }
 
     public void actionPerformed( ActionEvent e ) {
@@ -157,33 +157,68 @@ public class MyGridLayout extends JLayeredPane implements ActionListener {
           ebtn = buttons.get(Integer.toString(l));
           if(!(ebtn.getHasFlag())){
             ebtn.setVisible(false); //wanneer er op de knop gedrukt wordt is deze niet meer zichtbaar
-            numClicks = numClicks + 1;
             if (ebtn.getValue() == "B") {
-              try {
-                  ebtn.setVisible(false);
-                  Thread.sleep(1000);
-              }
-              catch(InterruptedException ie) {
-              }
-              bottom.setVisible(false);
+              ebtn.setVisible(false);
               top.setVisible(false);
               JOptionPane.showInputDialog(null, "Results", "You've lost :(");
-            //  JLabel lost = new JLabel();
-              //lost.setText("You've lost :(. Restart the application to try again");
-            //  add(lost, Integer.valueOf(3));
 
-            } else if(numClicks == numClickToWin) {
-              JOptionPane.showInputDialog(null, "Results", "You've won :D");
-              ebtn.setVisible(false);
-              bottom.setVisible(false);
-              top.setVisible(false);
-            //  JLabel won = new JLabel();
-            //  won.setText("You've won :D. Restart the application to try again");
-            //  add(won, Integer.valueOf(3));
+            }
+
+            //code om alle vakjes rondom een leeg vakje weg te halen
+            if (ebtn.getValue() == "") {
+              //rekensommen om de vakjes om het vakje heen te berekenen.
+              int[] checkID = new int[8];
+              checkID[0] = l-columns-1;
+              checkID[1] = l-columns;
+              checkID[2] = l-columns+1;
+              checkID[3] = l-1;
+              checkID[4] = l+1;
+              checkID[5] = l+columns-1;
+              checkID[6] = l+columns;
+              checkID[7] = l+columns+1;
+              int k;
+              for (k = 0; k < 8; k++) { //loopt door de acht mogelijke andere vakjes heen
+                  if (!(checkID[k] < 0) && !(checkID[k] > (numButtons-1))){ //checkt of het vakje bestaat
+                      Spot control;
+                      control = buttons.get(Integer.toString(checkID[k])); //pakt het vakje dat om het current vakje heen ligt
+                      try {
+                        control.setVisible(false);
+                      } catch(Exception ce) {
+                      }
+                      while (control.getValue() == "") { //code om nog meer vakjes rond weer nieuwe lege vakjes leeg te maken.
+                        try
+                        {
+                          int m = Integer.parseInt(control.getID());
+                          int[] checkID2 = new int[8];
+                          checkID2[0] = m-columns-1;
+                          checkID2[1] = m-columns;
+                          checkID2[2] = m-columns+1;
+                          checkID2[3] = m-1;
+                          checkID2[4] = m+1;
+                          checkID2[5] = m+columns-1;
+                          checkID2[6] = m+columns;
+                          checkID2[7] = m+columns+1;
+                          int n;
+                          for (n = 0; n < 8; n++) {
+                            control = buttons.get(Integer.toString(checkID2[n])); //pakt het vakje dat om het current vakje heen ligt
+                            try {
+                              control.setVisible(false);
+                            } catch(Exception ce) {
+                            }
+                          }
+                        }
+                        catch (NumberFormatException nfe)
+                        {
+                          break;//zodat het programma niet crashed terwijl je ook het vakje aan kan klikken.
+                        }
+
+                      }
+                    }
+                  }
+            }
             }
           }
 
         }
       }
     }
-}
